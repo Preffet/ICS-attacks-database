@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ICS Attacks Database</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .dataTables_filter {
+            float: right !important;
+            text-align: right !important;
+        }
+        .dt-buttons {
+            float: left !important;
+            margin-top: 10px; /* Add some margin for spacing */
+        }
+        .dataTables_wrapper .dataTables_filter {
+            float: right !important;
+            text-align: right !important;
+        }
+        .dataTables_wrapper .dataTables_paginate {
+            float: right !important;
+        }
+        .dataTables_wrapper .dataTables_length {
+            float: left !important;
+        }
+        .dataTables_wrapper .dataTables_info {
+            clear: both;
+            float: left !important;
+            padding-top: 0.755em;
+        }
+        .brief-icon {
+            cursor: pointer;
+            color: #007bff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th class="header-order">Attack/Campaign Name</th>
+                <th class="header-description">References</th>
+                <th class="header-deadline">Targeted Infrastructure</th>
+                <th class="header-status">Year</th>
+                <th class="header-amount">Country</th>
+                <th class="header-brief">Brief</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Campaign Alpha</td>
+                <td><a href="http://example.com/reference1" target="_blank">Reference 1</a></td>
+                <td>Power Grid</td>
+                <td>2016</td>
+                <td>USA</td>
+                <td><span class="brief-icon" onclick="showBrief('brief1')">ℹ️</span></td>
+            </tr>
+            <tr>
+                <td>Campaign Beta</td>
+                <td><a href="http://example.com/reference2" target="_blank">Reference 2</a></td>
+                <td>Water Supply</td>
+                <td>2017</td>
+                <td>Germany</td>
+                <td><span class="brief-icon" onclick="showBrief('brief2')">ℹ️</span></td>
+            </tr>
+            <!-- Additional rows here... -->
+        </tbody>
+    </table>
+
+    <!-- Modal structure -->
+    <div id="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5);">
+        <div style="position:relative; width:50%; margin:10% auto; padding:20px; background-color:white;">
+            <span style="position:absolute; top:10px; right:10px; cursor:pointer;" onclick="closeModal()">X</span>
+            <div id="modal-content"></div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+        const briefs = {
+            brief1: 'This is a detailed information about Campaign Alpha...',
+            brief2: 'This is a detailed information about Campaign Beta...'
+            // Additional brief information here...
+        };
+
+        function showBrief(id) {
+            document.getElementById('modal-content').innerText = briefs[id];
+            document.getElementById('modal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        $(document).ready(function() {
+            if (!$.fn.DataTable.isDataTable('#example')) {
+                $('#example').DataTable({
+                    "columnDefs": [
+                        { "orderable": false, "targets": 5 } // Disables sorting on the 'Brief' column
+                    ]
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,104 +1,119 @@
-$(document).ready(function() {
-    // DataTable initialization
-    $('#example').DataTable({
-        "dom": '<"top"lf<"info-container">>rt<"bottom"ipB><"clear">',
-        "paging": true,
-        "autoWidth": true,
-        "buttons": [
-            {
-                text: 'Download as PDF',
-                extend: 'pdfHtml5',
-                filename: 'ICS_attacks_pdf',
-                orientation: 'landscape', // portrait
-                pageSize: 'A4', // A3, A5, A6, legal, letter
-                exportOptions: {
-                    columns: ':visible',
-                    search: 'applied',
-                    order: 'applied'
-                },
-                customize: function (doc) {
-                    // Remove the title created by DataTables
-                    doc.content.splice(0, 1);
-                    // Create a date string that we use in the footer. Format is yyyy-mm-dd
-                    var now = new Date();
-                    var jsDate = now.getFullYear() + '-' + 
-                                 ('0' + (now.getMonth() + 1)).slice(-2) + '-' + 
-                                 ('0' + now.getDate()).slice(-2);
+import gsap from "https://cdn.skypack.dev/gsap@3.12.0";
+import { ScrollTrigger } from "https://cdn.skypack.dev/gsap@3.12.0/ScrollTrigger";
 
-                    // Set page margins [left, top, right, bottom]
-                    doc.pageMargins = [40, 60, 40, 30];
-                    // Set the font size for the entire document
-                    doc.defaultStyle.fontSize = 7;
-                    // Set the font size for the table header
-                    doc.styles.tableHeader.fontSize = 7;
+if (!CSS.supports("animation-timeline: view()")) {
+    gsap.registerPlugin(ScrollTrigger);
 
-                    // Create header and footer objects
-                    doc['header'] = (function(page, pages) {
-                        if (page === 1) {
-                            return {
-                                columns: [
-                                    {
-                                        alignment: 'center',
-                                        text: 'ICS Attacks',
-                                        fontSize: 14,
-                                        bold: true
-                                    }
-                                ],
-                                margin: [0, 20, 0, 20]
-                            };
-                        } else {
-                            return;
-                        }
-                    });
-
-                    doc['footer'] = (function(page, pages) {
-                        return {
-                            columns: [
-                                {
-                                    alignment: 'left',
-                                    text: ['Created on: ', { text: jsDate.toString() }]
-                                },
-                                {
-                                    alignment: 'right',
-                                    text: ['page ', { text: page.toString() }, ' of ', { text: pages.toString() }]
-                                }
-                            ],
-                            margin: [40, 0]
-                        };
-                    });
-
-                    // Change DataTable layout (Table styling)
-                    var objLayout = {};
-                    objLayout['hLineWidth'] = function(i) { return .5; };
-                    objLayout['vLineWidth'] = function(i) { return .5; };
-                    objLayout['hLineColor'] = function(i) { return '#aaa'; };
-                    objLayout['vLineColor'] = function(i) { return '#aaa'; };
-                    objLayout['paddingLeft'] = function(i) { return 4; };
-                    objLayout['paddingRight'] = function(i) { return 4; };
-                    doc.content[0].layout = objLayout;
-
-                    // Center the table by wrapping it in columns with flexible width
-                    var tableBody = doc.content[0].table.body;
-                    doc.content[0] = {
-                        columns: [
-                            { width: '*', text: '' },
-                            {
-                                width: 'auto',
-                                table: {
-                                    headerRows: 1,
-                                    body: tableBody,
-                                    alignment: "center"
-                                },
-                                layout: objLayout
-                            },
-                            { width: '*', text: '' }
-                        ]
-                    };
-                }
-            }
-        ],
-        "initComplete": function(settings, json) {
-            $('.info-container').append($('.dataTables_info'));
-        }
+    // Set up all the scroll animations with ScrollTrigger instead.
+    // Blanket styles
+    gsap.set(".fixed", {
+        position: "fixed",
+        inset: 0
     });
-});
+    gsap.set(".static", {
+        position: "absolute",
+        inset: 0,
+        zIndex: 6
+    });
+
+    const sections = document.querySelectorAll("section");
+
+    sections.forEach((section, index) => {
+        const fixed = section.querySelector(".fixed");
+        const img = section.querySelector("img");
+        const h2 = section.querySelector("h2");
+
+        // Apply different transformations and animations for each section
+        gsap.set(fixed, {
+            transformOrigin: "50% 0%"
+        });
+
+        gsap.to(fixed, {
+            scale: "0.35 0.5",
+            yPercent: -10,
+            scrollTrigger: {
+                scrub: 0.5,
+                trigger: section,
+                start: "top top",
+                end: "bottom 50%"
+            }
+        });
+
+        gsap.to(fixed, {
+            opacity: 0,
+            scrollTrigger: {
+                scrub: 0.5,
+                trigger: section,
+                start: "top top",
+                end: "bottom 75%"
+            }
+        });
+
+        gsap.set(fixed, {
+            clipPath: "ellipse(220% 200% at 50% 300%)",
+            zIndex: 3
+        });
+
+        gsap.to(fixed, {
+            clipPath: "ellipse(220% 200% at 50% 175%)",
+            scrollTrigger: {
+                scrub: 0.5,
+                trigger: section,
+                start: "top bottom",
+                end: "top top"
+            }
+        });
+
+        gsap.from(img, {
+            scale: 5,
+            scrollTrigger: {
+                scrub: 0.5,
+                trigger: section,
+                start: "top bottom",
+                end: "top top"
+            }
+        });
+
+        if (h2) {
+            gsap.from(h2, {
+                yPercent: 100,
+                scrollTrigger: {
+                    scrub: 0.5,
+                    trigger: section,
+                    start: "top 50%",
+                    end: "top 0%"
+                }
+            });
+
+            gsap.to(h2, {
+                filter: "blur(4rem)",
+                color: "transparent",
+                scrollTrigger: {
+                    scrub: 0.5,
+                    trigger: section,
+                    start: "bottom bottom",
+                    end: "bottom 50%"
+                }
+            });
+        }
+
+        // Scroll indicator trickery
+        const INDICATORS = document.querySelectorAll(".indicator");
+        const ARTICLES = document.querySelectorAll("article");
+        INDICATORS.forEach((indicator, index) => {
+            // Here need to animate the indicator based on the position of the card
+            gsap.to(indicator, {
+                flex: 3,
+                repeat: 1,
+                yoyo: true,
+                scrollTrigger: {
+                    scrub: true,
+                    trigger: ARTICLES[index],
+                    scroller: "body",
+                    start: "top bottom",
+                    end: "bottom top"
+                }
+            });
+        });
+    });
+}
