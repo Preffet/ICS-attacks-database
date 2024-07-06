@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ICS Attacks Database</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .dataTables_filter {
+            float: right !important;
+            text-align: right !important;
+        }
+        .dt-buttons {
+            float: left !important;
+            margin-top: 10px; /* Add some margin for spacing */
+        }
+        .dataTables_wrapper .dataTables_filter {
+            float: right !important;
+            text-align: right !important;
+        }
+        .dataTables_wrapper .dataTables_paginate {
+            float: right !important;
+        }
+        .dataTables_wrapper .dataTables_length {
+            float: left !important;
+        }
+        .dataTables_wrapper .dataTables_info {
+            clear: both;
+            float: left !important;
+            padding-top: 0.755em;
+        }
+    </style>
+</head>
+<body>
+    <table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th class="header-order">Order</th>
+                <th class="header-description">Description</th>
+                <th class="header-deadline">Deadline</th>
+                <th class="header-status">Status</th>
+                <th class="header-amount">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Alphabet puzzle</td>
+                <td>2016/01/15</td>
+                <td>Done</td>
+                <td data-order="1000">€1.000,00</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Layout for poster</td>
+                <td>2016/01/31</td>
+                <td>Planned</td>
+                <td data-order="1834">€1.834,00</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Image creation</td>
+                <td>2016/01/23</td>
+                <td>To Do</td>
+                <td data-order="1500">€1.500,00</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Create font</td>
+                <td>2016/02/26</td>
+                <td>Done</td>
+                <td data-order="1200">€1.200,00</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Sticker production</td>
+                <td>2016/02/18</td>
+                <td>Planned</td>
+                <td data-order="2100">€2.100,00</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>Glossy poster</td>
+                <td>2016/03/17</td>
+                <td>To Do</td>
+                <td data-order="899">€899,00</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>Beer label</td>
+                <td>2016/05/28</td>
+                <td>Confirmed</td>
+                <td data-order="2499">€2.499,00</td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td>Shop sign</td>
+                <td>2016/04/19</td>
+                <td>Offer</td>
+                <td data-order="1099">€1.099,00</td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td>X-Mas decoration</td>
+                <td>2016/10/31</td>
+                <td>Confirmed</td>
+                <td data-order="1750">€1.750,00</td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td>Halloween invite</td>
+                <td>2016/09/12</td>
+                <td>Planned</td>
+                <td data-order="400">€400,00</td>
+            </tr>
+        </tbody>
+    </table>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

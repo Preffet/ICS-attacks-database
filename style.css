@@ -1,0 +1,31 @@
+body {margin:2em;}
+
+.header-order {
+    background-color: #097e37; /* Red */
+    color: white;
+}
+
+.header-description {
+    background-color: #0b7266; /* Blue */
+    color: white;
+}
+
+.header-deadline {
+    background-color: #036fa0; /* Green */
+    color: white;
+}
+
+.header-status {
+    background-color: #172978; /* Orange */
+    color: white;
+}
+
+.header-amount {
+    background-color: #48136f; /* Gray */
+    color: white;
+}
+
+th {
+    padding: 10px;
+    text-align: left;
+}
