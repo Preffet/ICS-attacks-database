@@ -1,95 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>ICS Attacks Database</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>ICS Attacks</title>
 </head>
 <body>
-    <nav>
-        <div class="logo">
-            <a href="#">ICS Attacks</a>
-        </div>
-        <div class="nav-links">
-            <a href="#about">About</a>
-            <a href="#attacks-db">Attacks Database</a>
-            <a href="#attacks-map">Attacks Map</a>
-            <a href="#contact-info">Contact Info</a>
-        </div>
-    </nav>
-
-    <div class="indicators">
-        <a href="#about" class="indicator"></a>
-        <a href="#attacks-db" class="indicator"></a>
-        <a href="#attacks-map" class="indicator"></a>
-        <a href="#contact-info" class="indicator"></a>
+  <div class="navbar">
+    <div class="brand">ICS Attacks</div>
+    <div class="nav-links">
+      <a href="index.html#about">About</a>
+      <a href="index2.html">Attacks Database</a>
     </div>
+  </div>
 
-    <main>
-        <section id="about">
-            <article>
-                <div class="fixed">
-                    <img src="bg-img2.jpg" alt="About Image">
-                    <div class="content">
-                        <h1>About ICS Attacks</h1>
-                        <p>This project was done as part of a University of Warwick dissertation and records and analyses all ICS attacks.</p>
-                    </div>
-                </div>
-            </article>
-        </section>
-        <section id="attacks-db">
-            <article>
-                <div class="fixed">
-                    <img src="bg-img2.jpg" alt="Database Image">
-                </div>
-                <div class="static">
-                    <div class="content">
-                        <h2>Attacks Database</h2>
-                        <p>Explore our database with known ICS attacks.</p>
-                        <a href="database.html" class="btn">See Database</a>
-                    </div>
-                </div>
-            </article>
-        </section>
-        <section id="attacks-map">
-            <article>
-                <div class="fixed">
-                    <img src="bg-img2.jpg" alt="Map Image">
-                </div>
-                <div class="static">
-                    <div class="content">
-                        <h2>Attacks Map</h2>
-                        <p>Each analyzed attack can be seen in an image overlay.</p>
-                        <a href="map.html" class="btn">View Map</a>
-                    </div>
-                </div>
-            </article>
-        </section>
-        <section id="contact-info">
-            <article>
-                <div class="fixed">
-                    <img src="bg-img2.jpg" alt="Contact Image">
-                </div>
-                <div class="static">
-                    <div class="content">
-                        <h2>Contact Info</h2>
-                        <p>Get in touch with us for more information and support.</p>
-                        <p>Email: xxx@gmail.com</p>
-                        <p>GitHub: <a href="https://github.com/your-github" class="btn">Your GitHub Page</a></p>
-                        <a href="contact.html" class="btn">Contact Us</a>
-                    </div>
-                </div>
-            </article>
-        </section>
-    </main>
+  <div class="main-content">
+    <section id="about" class="section-container">
+      <div class="image-container">
+        <img src="/images/8.jpg" alt="ICS Image">
+      </div>
+      <div class="text-container">
+        <h1 class="aurora-title">About
+          <div class="aurora">
+            <div class="aurora__item"></div>
+            <div class="aurora__item"></div>
+            <div class="aurora__item"></div>
+            <div class="aurora__item"></div>
+          </div>
+        </h1>
+        <p class="gray-text">Industrial Control Systems run factories and other important systems, such as power grids, water systems, and train networks. While their security is of national importance, these systems are often old-fashioned and the security is sometimes out of date.</p>
+        <p class="gray-text">This project records and documents ICS attacks in a centralised database, providing a valuable resource for future analysis and research into these security breaches and prevention of the future attacks.</p>
+        <p class="gray-text">For further information, inquiries, or to report new attacks, please get in touch via email or open a pull request to update the database directly on GitHub. We are open to collaboration and are eager to share our findings with others working in the field of ICS security.</p>
+        <div class="cta">
+          <button class="neon-button" onclick="location.href='index2.html'">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            View the Database
+          </button>
+          <div class="icon-links">
+            <a href="https://github.com/Preffet/ICS-Attacks-Website" target="_blank">
+              <img src="/images/github.svg" alt="GitHub" class="icon-github">
+            </a>
+            <a href="mailto:jstmtr@gmail.com" target="_blank">
+              <img src="/images/email3.png" alt="Email" class="icon-email">
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 
-    <footer class="footer">
-        &copy; 2024 ICS Attacks Database. All rights reserved.
-    </footer>
-
-    <script type="module" src="script.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
