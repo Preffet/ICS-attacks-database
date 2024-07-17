@@ -5,17 +5,27 @@ function showBrief(details) {
         const overlayContent = document.getElementById('overlay-content');
 
         overlayContent.innerHTML = `
-            <h2>${detailObj["Attack/Campaign Name"]}</h2>
-            <p><strong>Targeted Infrastructure:</strong> ${detailObj["Targetted Infrastructure"]}</p>
+        <br>
+            <h2 class="brief-title">${detailObj["Attack/Campaign Name"]}
+                <div class="brief-aurora">
+                    <div class="brief-aurora__item"></div>
+                    <div class="brief-aurora__item"></div>
+                    <div class="brief-aurora__item"></div>
+                    <div class="brief-aurora__item"></div>
+                </div>
+            </h2>
+            <tr>
+            <br>
             <p><strong>Year:</strong> ${detailObj.Year}</p>
-            <p><strong>Sophistication:</strong> ${detailObj.Sophistication}</p>
-            <p><strong>Scale:</strong> ${detailObj.Scale}</p>
             <p><strong>Country:</strong> ${detailObj.Country}</p>
-            <p><strong>Attacker Type:</strong> ${detailObj["Attacker Type"]}</p>
+            <p><strong>Scale:</strong> ${detailObj.Scale}</p>
+            <p><strong>Targeted Infrastructure:</strong> ${detailObj["Targetted Infrastructure"]}</p>
+            <p><strong>Sophistication:</strong> ${detailObj.Sophistication}</p>
             <p><strong>Initial Access:</strong> ${detailObj["Initial Access"]}</p>
-            <p><strong>Impact:</strong> ${detailObj.Impact}</p>
+            <p><strong>Attacker Type:</strong> ${detailObj["Attacker Type"]}</p>
             <p><strong>Attacker Name:</strong> ${detailObj["Attacker Name"]}</p>
-            <p><strong>Story:</strong> ${detailObj.Story}</p>
+            <p><strong>Impact:</strong> ${detailObj.Impact}</p>
+            <p><strong>Description:</strong> ${detailObj.Story}</p>
         `;
 
         overlay.style.display = 'flex';
@@ -77,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <td>${row.Year}</td>
                     <td>${row.Country}</td>
                     <td>${row["Initial Access"]}</td>
-                    <td><span class="brief-icon" data-details="${jsonRow}"></span></td>
+                    <td><span class="brief-icon" data-details="${jsonRow}">➾    </span></td>
                 </tr>`;
             tableBody.append(tableRow);
         });
@@ -95,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     orientation: 'landscape',
                     pageSize: 'A4',
                     exportOptions: {
-                        columns: ':visible',
+                        columns: ':visible:not(:last-child)', // Exclude the last column (Brief)
                         search: 'applied',
                         order: 'applied'
                     },

@@ -646,8 +646,69 @@ table.show {
   margin-top: 0;
 }
 
+/* Add this style for the aurora title effect in the overlay */
+.overlay-content .aurora-title {
+  font-size: 32px;
+  margin-bottom: 16px;
+  position: relative;
+  text-transform: uppercase;
+  overflow: hidden;
+  height: 1em;
+  padding-right: .5em;
+  color: transparent;
+  background: linear-gradient(90deg, #ff3700, #ffa033, #fff240, #c58000);
+  -webkit-background-clip: text;
+  background-clip: text;
+  margin-top: -50px;
+}
+
+.overlay-content .aurora-title:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 100%;
+  bottom: 0;
+  left: 0;
+  background: #444;
+  animation: text-reveal-aft 1000ms forwards;
+}
+
+.overlay-content .aurora {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  mix-blend-mode: darken;
+  pointer-events: none;
+}
+
+.overlay-content .aurora__item {
+  overflow: hidden;
+  position: absolute;
+  width: 60vw;
+  height: 60vw;
+  background-color: var(--clr-1);
+  border-radius: 37% 29% 27% 27% / 28% 25% 41% 37%;
+  filter: blur(var(--blur));
+  mix-blend-mode: overlay;
+}
+
+.overlay-content .aurora__item:nth-of-type(1) { animation: aurora-border 6s ease-in-out infinite, aurora-1 12s ease-in-out infinite alternate; }
+.overlay-content .aurora__item:nth-of-type(2) { background-color: var(--clr-3); right: 0; top: 0; animation: aurora-border 6s ease-in-out infinite, aurora-2 12s ease-in-out infinite alternate; }
+.overlay-content .aurora__item:nth-of-type(3) { background-color: var(--clr-2); left: 0; bottom: 0; animation: aurora-border 6s ease-in-out infinite, aurora-3 8s ease-in-out infinite alternate; }
+.overlay-content .aurora__item:nth-of-type(4) { background-color: var(--clr-4); right: 0; bottom: -50%; animation: aurora-border 6s ease-in-out infinite, aurora-4 24s ease-in-out infinite alternate; }
+
+/* Style for the data fields in the overlay */
+.overlay-content p strong {
+    color: #ffffff; /* white for the label */
+}
+
 .overlay-content p {
-  margin: 10px 0;
+    color: #ffa500; /* orange for the data */
+    margin: 10px 0;
 }
 
 /* Distinct styles for odd/even lines in the table */
@@ -669,7 +730,6 @@ table.dataTable tbody tr:last-child td {
   border-bottom: none;
 }
 
-/* brief icon */
 .brief-icon {
   position: relative;
   height: 40px;
@@ -681,14 +741,14 @@ table.dataTable tbody tr:last-child td {
   background: rgba(255, 255, 255, 0.03);
   cursor: pointer;
   z-index: 1001; /* Ensures it appears above the table */
-  color: #7F7F7F;
+  color: #ffffff; 
   font-weight: bold;
-  font-size: 18px;
+  font-size: 24px; 
 }
 
 .brief-icon:hover {
   background: rgba(255, 255, 255, 0.5);
-  color: #fff;
+  color: #ff9500;
 }
 /* General override to ensure no default background color changes */
 table.dataTable thead th.sorting,
@@ -714,14 +774,81 @@ table.dataTable tbody tr:hover {
 
 /* Further tweaking the colors for better visibility */
 table.dataTable tbody tr:nth-child(odd):hover {
-  background-color: rgba(255, 255, 255, 0.04);
+  background-color: #1E1F2E
 }
 
 table.dataTable tbody tr:nth-child(even):hover {
-  background-color: rgba(255, 255, 255, 0.06);
+  background-color: #1E1F2E
 }
 
 table.dataTable tbody tr td,
 table.dataTable tbody tr th {
     background-color: transparent !important;
+}
+
+/* styles for the Brief overlay section */
+.overlay-content .brief-title {
+  font-size: 20px;
+  margin-bottom: 16px;
+  position: relative;
+  text-transform: uppercase;
+  overflow: hidden;
+  height: 1em;
+  padding-right: .5em;
+  color: transparent;
+  background: linear-gradient(90deg, #ffffff, hsl(0, 0%, 100%)); /* might change to actual gradient later */
+  -webkit-background-clip: text;
+  background-clip: text;
+  margin-top: 0;
+  text-align: center; /* Center align the text */
+  white-space: nowrap; /* Prevent text from wrapping */
+}
+
+.overlay-content .brief-title:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 100%;
+  bottom: 0;
+  left: 0;
+  background: #444;
+  animation: text-reveal-aft 1000ms forwards;
+}
+
+.overlay-content .brief-aurora {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  mix-blend-mode: darken;
+  pointer-events: none;
+}
+
+.overlay-content .brief-aurora__item {
+  overflow: hidden;
+  position: absolute;
+  width: 60vw;
+  height: 60vw;
+  background-color: var(--clr-1);
+  border-radius: 37% 29% 27% 27% / 28% 25% 41% 37%;
+  filter: blur(var(--blur));
+  mix-blend-mode: overlay;
+}
+
+.overlay-content .brief-aurora__item:nth-of-type(1) { animation: aurora-border 6s ease-in-out infinite, aurora-1 12s ease-in-out infinite alternate; }
+.overlay-content .brief-aurora__item:nth-of-type(2) { background-color: var(--clr-3); right: 0; top: 0; animation: aurora-border 6s ease-in-out infinite, aurora-2 12s ease-in-out infinite alternate; }
+.overlay-content .brief-aurora__item:nth-of-type(3) { background-color: var(--clr-2); left: 0; bottom: 0; animation: aurora-border 6s ease-in-out infinite, aurora-3 8s ease-in-out infinite alternate; }
+.overlay-content .brief-aurora__item:nth-of-type(4) { background-color: var(--clr-4); right: 0; bottom: -50%; animation: aurora-border 6s ease-in-out infinite, aurora-4 24s ease-in-out infinite alternate; }
+
+/* Style for the data fields in the overlay */
+.overlay-content p strong {
+    color:#c8c2c2; /* white for the label */
+}
+
+.overlay-content p {
+    color: #8888889e; /* orange for the data */
+    margin: 10px 0;
 }
