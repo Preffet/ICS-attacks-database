@@ -77,7 +77,6 @@ h1, h2, h3, h4, h5, h6 {
 /* Main content area */
 .main-content {
   flex: 1;
-  padding-top: 60px;
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - 60px); /* Ensure it stretches to full height minus navbar height */
@@ -443,11 +442,6 @@ body {
   flex-direction: column;
 }
 
-.main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
 
 .header-bg {
   background-color: rgba(46, 46, 46, 0.7);
@@ -732,7 +726,6 @@ table.dataTable tbody tr:last-child td {
 
 .brief-icon {
   position: relative;
-  height: 40px;
   width: 40px;
   border-radius: 50%;
   display: flex;

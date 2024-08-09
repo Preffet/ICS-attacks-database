@@ -4,8 +4,16 @@ function showBrief(details) {
         const overlay = document.getElementById('overlay');
         const overlayContent = document.getElementById('overlay-content');
 
+
+        // Reference 2: Conditional display
+        let reference2HTML = '';
+        if (detailObj.Reference2) {
+            reference2HTML = `, <a href="${detailObj.Reference2}" target="_blank"> [2]</a></p>`;
+        }
+
+        // Combine and display
         overlayContent.innerHTML = `
-        <br>
+            <br>
             <h2 class="brief-title">${detailObj["Attack/Campaign Name"]}
                 <div class="brief-aurora">
                     <div class="brief-aurora__item"></div>
@@ -26,6 +34,8 @@ function showBrief(details) {
             <p><strong>Attacker Name:</strong> ${detailObj["Attacker Name"]}</p>
             <p><strong>Impact:</strong> ${detailObj.Impact}</p>
             <p><strong>Description:</strong> ${detailObj.Story}</p>
+            <p><strong>References:</strong> <a href="${detailObj.Reference1}" target="_blank">[1]</a> 
+            ${reference2HTML}
         `;
 
         overlay.style.display = 'flex';
@@ -33,6 +43,8 @@ function showBrief(details) {
         console.error("Error parsing details:", error, details);
     }
 }
+
+
 
 function applyCustomStyles() {
     $('#example').on('draw.dt', function() {
@@ -87,7 +99,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     <td>${row.Year}</td>
                     <td>${row.Country}</td>
                     <td>${row["Initial Access"]}</td>
-                    <td><span class="brief-icon" data-details="${jsonRow}">➾    </span></td>
+                    <td style="display:none;">${row.Story}</td>
+                    <td><span class="brief-icon" data-details="${jsonRow}">➾</span></td>
                 </tr>`;
             tableBody.append(tableRow);
         });
@@ -207,7 +220,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     $.ajax({
-        url: 'attacks.csv',
+        url: 'web-table.csv',
         dataType: 'text',
     }).done(function(data) {
         Papa.parse(data, {
