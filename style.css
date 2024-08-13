@@ -1310,15 +1310,6 @@ input[type="checkbox"]:checked:not(#unknown-year) + label::after {
             display: inline-block;
         }
 
-        input[type="checkbox"]:checked + label::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            height: 2px;
-            background-color: #ffffff;
-        }
 
         .checkbox-container div {
             display: inline-block;
@@ -1374,12 +1365,13 @@ input[type="checkbox"]:checked:not(#unknown-year) + label::after {
           display: inline-block;
       }
 
-      input[type="checkbox"]:checked + label::after {
-          content: '';
-          position: absolute;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          height: 2px;
-          background-color: #0070b6;
-      }
+
+        input[type="checkbox"]:checked + label::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 2px;
+            background-color: #ffffff;
+        }
