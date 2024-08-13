@@ -2,16 +2,13 @@ function showBrief(details) {
     try {
         const detailObj = JSON.parse(details);
         const overlay = document.getElementById('overlay');
-        const overlayContent = document.getElementById('overlay-content');
+        const overlayContent = document.getElementById('overlay-details');
 
-
-        // Reference 2: Conditional display
         let reference2HTML = '';
         if (detailObj.Reference2) {
             reference2HTML = `, <a href="${detailObj.Reference2}" target="_blank"> [2]</a></p>`;
         }
 
-        // Combine and display
         overlayContent.innerHTML = `
             <br>
             <h2 class="brief-title">${detailObj["Attack/Campaign Name"]}
@@ -28,7 +25,6 @@ function showBrief(details) {
             <p><strong>Country:</strong> ${detailObj.Country}</p>
             <p><strong>Scale:</strong> ${detailObj.Scale}</p>
             <p><strong>Targeted Infrastructure:</strong> ${detailObj["Targetted Infrastructure"]}</p>
-            <p><strong>Sophistication:</strong> ${detailObj.Sophistication}</p>
             <p><strong>Initial Access:</strong> ${detailObj["Initial Access"]}</p>
             <p><strong>Attacker Type:</strong> ${detailObj["Attacker Type"]}</p>
             <p><strong>Attacker Name:</strong> ${detailObj["Attacker Name"]}</p>
@@ -43,8 +39,6 @@ function showBrief(details) {
         console.error("Error parsing details:", error, details);
     }
 }
-
-
 
 function applyCustomStyles() {
     $('#example').on('draw.dt', function() {
@@ -86,30 +80,72 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    function updateDataTable() {
+        let selectedTypes = [];
+        let selectedInfrastructures = [];
+        const dataTable = $('#example').DataTable();
+
+        $('#attacker-type-filter input[type="checkbox"]:checked').each(function () {
+            // Use \b to denote word boundaries, ensuring exact matches
+            selectedTypes.push('\\b' + $(this).val() + '\\b');
+        });
+
+        $('#targeted-infrastructure-filter input[type="checkbox"]:checked').each(function () {
+            selectedInfrastructures.push('\\b' + $(this).val() + '\\b');
+        });
+
+        const typeSearchValue = selectedTypes.length > 0 ? selectedTypes.join('|') : 'No Matches';
+        const infraSearchValue = selectedInfrastructures.length > 0 ? selectedInfrastructures.join('|') : 'No Matches';
+
+        dataTable.columns(6).search(typeSearchValue, true, false).draw();
+        dataTable.columns(1).search(infraSearchValue, true, false).draw();
+    }
+
     function populateTable(data) {
         const tableBody = $('#example tbody');
+        const attackerTypeFilter = $('#attacker-type-filter');
+        const targetedInfrastructureFilter = $('#targeted-infrastructure-filter');
+        const attackerTypes = new Set();
+
         tableBody.empty();
 
         data.forEach(row => {
+            const attackerType = row["Attacker Type"];
+            const initialAccess = row["Initial Access"];
+            const targetedInfrastructure = row["Targetted Infrastructure"];
+            attackerTypes.add(attackerType);
+
             const jsonRow = encodeURIComponent(JSON.stringify(row));
             const tableRow = `
-                <tr>
+                <tr data-attacker-type="${attackerType}" data-targeted-infrastructure="${targetedInfrastructure}" data-initial-access="${initialAccess}">
                     <td>${row["Attack/Campaign Name"]}</td>
-                    <td>${row["Targetted Infrastructure"]}</td>
+                    <td>${targetedInfrastructure}</td>
                     <td>${row.Year}</td>
                     <td>${row.Country}</td>
-                    <td>${row["Initial Access"]}</td>
+                    <td>${initialAccess}</td>
                     <td style="display:none;">${row.Story}</td>
+                    <td>${attackerType}</td>
                     <td><span class="brief-icon" data-details="${jsonRow}">➾</span></td>
                 </tr>`;
             tableBody.append(tableRow);
         });
 
-        $('#example').DataTable({
+        attackerTypeFilter.empty();
+        attackerTypes.forEach(type => {
+            attackerTypeFilter.append(`
+                <div>
+                    <input type="checkbox" id="${type}" name="attacker-type" value="${type}" checked>
+                    <label for="${type}">${type}</label>
+                </div>
+            `);
+        });
+
+        const dataTable = $('#example').DataTable({
             dom: '<"top"lf<"info-container">>rt<"bottom"ipB><"clear">',
             paging: true,
             autoWidth: false,
             responsive: true,
+            pageLength: 100,
             buttons: [
                 {
                     text: 'Download as PDF',
@@ -118,7 +154,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     orientation: 'landscape',
                     pageSize: 'A4',
                     exportOptions: {
-                        columns: ':visible:not(:last-child)', // Exclude the last column (Brief)
+                        columns: ':visible:not(:last-child)',
                         search: 'applied',
                         order: 'applied'
                     },
@@ -189,34 +225,122 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             ],
             drawCallback: function (settings) {
-                // Re-attach event listener for brief icons
                 $('.brief-icon').off('click').on('click', function() {
                     const details = decodeURIComponent($(this).data('details'));
                     showBrief(details);
                 });
-
-                // Remove some default styles
                 applyCustomStyles();
             },
             initComplete: function(settings, json) {
                 $('.info-container').append($('.dataTables_info'));
                 $('#example').show();
 
-                // Attach the event listener for the brief icons for the first time
                 $('.brief-icon').on('click', function() {
                     const details = decodeURIComponent($(this).data('details'));
                     showBrief(details);
                 });
+
+                updateDataTable();
             },
             columnDefs: [
                 { orderable: false, targets: 5 },
-                { className: "dt-center", targets: "_all" }
-            ]
+                { className: "dt-center", targets: "_all" },
+                { width: "5%", targets: 7, orderable: false }
+            ],
+        });
+
+        $('#attacker-type-filter input[type="checkbox"], #targeted-infrastructure-filter input[type="checkbox"]').on('change', function () {
+            updateDataTable();
+        });
+
+        const yearSlider = document.getElementById('year-range-slider');
+        const yearStart = document.getElementById('year-start');
+        const yearEnd = document.getElementById('year-end');
+        const unknownYearCheckbox = document.getElementById('unknown-year');
+
+        // Set the unknown year checkbox to checked by default
+        unknownYearCheckbox.checked = true;
+
+        noUiSlider.create(yearSlider, {
+            start: [1988, 2024],
+            connect: true,
+            step: 1,
+            range: {
+                'min': 1988,
+                'max': 2024
+            },
+            format: {
+                to: function (value) {
+                    return Math.round(value);
+                },
+                from: function (value) {
+                    return Number(value);
+                }
+            }
+        });
+
+        $.fn.dataTable.ext.search.push(function (settings, data) {
+            const minYear = parseInt(yearSlider.noUiSlider.get()[0]);
+            const maxYear = parseInt(yearSlider.noUiSlider.get()[1]);
+            const yearData = data[2];
+
+            const yearRange = yearData.split('-').map(year => year.trim());
+
+            const isUnknownYearIncluded = unknownYearCheckbox.checked && yearData.toLowerCase() === "unknown";
+
+            if (isUnknownYearIncluded) {
+                return true;
+            }
+
+            if (yearRange.length === 2) {
+                const startYear = parseInt(yearRange[0]);
+                const endYear = parseInt(yearRange[1]);
+                return (startYear <= maxYear && endYear >= minYear);
+            } else {
+                const year = parseInt(yearRange[0]);
+                return (year >= minYear && year <= maxYear);
+            }
+        });
+
+        yearSlider.noUiSlider.on('update', function (values) {
+            yearStart.textContent = values[0];
+            yearEnd.textContent = values[1];
+            dataTable.draw();
+        });
+
+        yearSlider.noUiSlider.on('change', function () {
+            dataTable.draw();
+        });
+
+        unknownYearCheckbox.addEventListener('change', function () {
+            dataTable.draw();
         });
     }
 
-    document.getElementById('overlay').addEventListener('click', function() {
-        this.style.display = 'none';
+    document.getElementById('overlay').addEventListener('click', function(event) {
+        if (event.target !== this) return;
+    });
+
+    // Show the filter overlay
+    document.getElementById('advanced-filter-button').addEventListener('click', function() {
+        document.getElementById('filter-overlay').style.display = 'flex';
+    });
+
+    // Apply filters and hide the overlay
+    document.getElementById('apply-filters-button').addEventListener('click', function() {
+        updateDataTable();
+        document.getElementById('filter-overlay').style.display = 'none';
+    });
+
+    // Add close functionality for overlay windows
+    const overlay = document.getElementById('overlay');
+    const filterOverlay = document.getElementById('filter-overlay');
+    
+    document.querySelectorAll('.close-button').forEach(button => {
+        button.addEventListener('click', function() {
+            overlay.style.display = 'none';
+            filterOverlay.style.display = 'none';
+        });
     });
 
     $.ajax({
@@ -231,4 +355,91 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const toggleAttackerTypesButton = document.getElementById('toggle-attacker-types');
+    let allAttackerTypesSelected = true;
+
+    toggleAttackerTypesButton.addEventListener('click', function () {
+        const checkboxes = document.querySelectorAll('#attacker-type-filter input[type="checkbox"]');
+        allAttackerTypesSelected = !allAttackerTypesSelected;
+
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = allAttackerTypesSelected;
+            $(checkbox).trigger('change');
+        });
+
+        toggleAttackerTypesButton.textContent = allAttackerTypesSelected ? 'Deselect All' : 'Select All';
+        updateDataTable();
+    });
+
+    const toggleTargetedInfrastructureButton = document.getElementById('toggle-targeted-infrastructure');
+    let allTargetedInfrastructureSelected = true;
+
+    toggleTargetedInfrastructureButton.addEventListener('click', function () {
+        const checkboxes = document.querySelectorAll('#targeted-infrastructure-filter input[type="checkbox"]');
+        allTargetedInfrastructureSelected = !allTargetedInfrastructureSelected;
+
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = allTargetedInfrastructureSelected;
+            $(checkbox).trigger('change');
+        });
+
+        toggleTargetedInfrastructureButton.textContent = allTargetedInfrastructureSelected ? 'Deselect All' : 'Select All';
+        updateDataTable();
+    });
+
+    const advancedFilterButton = document.getElementById('advanced-filter-button');
+    let resizeTimeout;
+
+    function positionAdvancedFilterButton() {
+        const table = document.getElementById('example');
+        if (!table) return;
+
+        const tableRect = table.getBoundingClientRect();
+        const buttonRect = advancedFilterButton.getBoundingClientRect();
+
+        const buttonLeftPosition = tableRect.right - buttonRect.width - 20;
+
+        advancedFilterButton.style.left = `${buttonLeftPosition}px`;
+        advancedFilterButton.style.opacity = 1;
+    }
+
+    function throttle(func, wait) {
+        let timeout;
+        return function (...args) {
+            if (!timeout) {
+                timeout = setTimeout(() => {
+                    func.apply(this, args);
+                    timeout = null;
+                }, wait);
+            }
+        };
+    }
+
+    advancedFilterButton.style.opacity = 0;
+    positionAdvancedFilterButton();
+
+    const throttledResize = throttle(positionAdvancedFilterButton, 100);
+
+    window.addEventListener('resize', function() {
+        if (resizeTimeout) {
+            cancelAnimationFrame(resizeTimeout);
+        }
+        resizeTimeout = requestAnimationFrame(throttledResize);
+    });
+
+    const observer = new ResizeObserver(() => {
+        positionAdvancedFilterButton();
+    });
+    observer.observe(document.getElementById('example'));
+
+    document.querySelector('#example').addEventListener('draw.dt', function () {
+        positionAdvancedFilterButton();
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.body.classList.add('loaded');
 });

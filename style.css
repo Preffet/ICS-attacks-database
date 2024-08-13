@@ -11,7 +11,6 @@ html, body {
   display: flex;
   flex-direction: column;
   scroll-behavior: smooth;
-  height: 100%;
 }
 
 body {
@@ -442,7 +441,6 @@ body {
   flex-direction: column;
 }
 
-
 .header-bg {
   background-color: rgba(46, 46, 46, 0.7);
   padding: 20px 0;
@@ -525,6 +523,7 @@ body {
 .fixed-width {
   width: 100% !important;
   max-width: 1200px;
+  min-width: 1200px;
   margin: auto;
   table-layout: fixed;
 }
@@ -536,12 +535,10 @@ table {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  display: none;
+  display: table; /* Ensure the table always displays */
   width: 100%;
-}
-
-table.show {
-  display: table;
+  min-width: 100%;
+  empty-cells: show; /* Ensure empty cells are displayed to maintain table structure */
 }
 
 .buttons-pdf, .dataTables_paginate .paginate_button {
@@ -623,7 +620,6 @@ table.show {
   z-index: 1000;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
 }
 
 .overlay-content {
@@ -634,6 +630,7 @@ table.show {
   max-height: 80%;
   overflow-y: auto;
   color: #e0e0e0;
+  position: relative;
 }
 
 .overlay-content h2 {
@@ -716,28 +713,33 @@ table.dataTable tbody tr:nth-child(even) {
 
 table.dataTable tbody td {
   padding: 8px 10px;
+  min-width: 142px;
   border-bottom: 1px solid #000000de;
   color: #7F7F7F; /* Set text color */
+  font-size: 16px; /* Set font size for the table body cells */
 }
 
 table.dataTable tbody tr:last-child td {
   border-bottom: none;
 }
 
+/* Style the brief icon/button */
 .brief-icon {
   position: relative;
-  width: 40px;
+  width: 40px; 
+  height: 40px; 
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(255, 255, 255, 0.03);
   cursor: pointer;
-  z-index: 1001; /* Ensures it appears above the table */
   color: #ffffff; 
   font-weight: bold;
   font-size: 24px; 
+  margin: 0 auto;
 }
+
 
 .brief-icon:hover {
   background: rgba(255, 255, 255, 0.5);
@@ -750,6 +752,8 @@ table.dataTable thead th.sorting_desc,
 table.dataTable thead th.sorting_asc_disabled,
 table.dataTable thead th.sorting_desc_disabled {
     background-color: transparent !important;
+    text-align: center !important;
+    padding-right: 62px;
 }
 
 /* Ensure sorted column in tbody does not change color */
@@ -774,10 +778,6 @@ table.dataTable tbody tr:nth-child(even):hover {
   background-color: #1E1F2E
 }
 
-table.dataTable tbody tr td,
-table.dataTable tbody tr th {
-    background-color: transparent !important;
-}
 
 /* styles for the Brief overlay section */
 .overlay-content .brief-title {
@@ -786,7 +786,6 @@ table.dataTable tbody tr th {
   position: relative;
   text-transform: uppercase;
   overflow: hidden;
-  height: 1em;
   padding-right: .5em;
   color: transparent;
   background: linear-gradient(90deg, #ffffff, hsl(0, 0%, 100%)); /* might change to actual gradient later */
@@ -838,10 +837,549 @@ table.dataTable tbody tr th {
 
 /* Style for the data fields in the overlay */
 .overlay-content p strong {
-    color:#c8c2c2; /* white for the label */
+    color: #ffffff; /* white for the label */
 }
 
 .overlay-content p {
-    color: #8888889e; /* orange for the data */
+    color: #ffa500; /* orange for the data */
     margin: 10px 0;
 }
+
+/* Adjust the brief title style to handle overflow */
+.overlay-content .brief-title {
+  font-size: 20px;
+  margin-bottom: 16px;
+  position: relative;
+  text-transform: uppercase;
+  word-wrap: break-word;
+  white-space: normal;
+  padding-right: .5em;
+  color: transparent;
+  background: linear-gradient(90deg, #ffffff, hsl(0, 0%, 100%)); /* Gradient for title */
+  -webkit-background-clip: text;
+  background-clip: text;
+  margin-top: 0;
+  text-align: center;
+  line-height: 1.2; 
+}
+
+/* Ensure the filter container and its content are visible */
+.filter-container {
+  overflow: visible;
+  position: relative;
+  z-index: 10; 
+  margin-bottom: 20px; 
+  display: flex;
+  align-items: center;
+}
+
+/* Ensure the labels are visible */
+.filter-container label {
+  color: #e0e0e0; 
+  font-size: 16px;
+  font-style: bold;
+  margin-right: -5px;
+  z-index: 10;
+  position: relative;
+}
+
+/* Ensure the dropdown is also visible */
+.filter-container select {
+  z-index: 10; 
+  position: relative;
+  background-color: #0C0E10; 
+  color: #e0e0e0; 
+  border: 1px solid #7F7F7F;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+/* Adjust the z-index of the table wrapper if necessary */
+.table-wrapper {
+  z-index: 5;
+  position: relative;
+}
+
+/* Adjust the main-content z-index and positioning */
+.main-content {
+  position: relative;
+  z-index: 1; 
+}
+
+.slider-container label {
+  color: #e0e0e0; 
+  font-size: 16px;
+  margin-right: 10px;
+  z-index: 10;
+  position: relative;
+}
+
+.slider-values {
+  color: #e0e0e0; 
+  font-size: 16px;
+  margin-right: 10px;
+  z-index: 10;
+  position: relative;
+}
+
+/* New wrapper for search and button */
+.search-filter-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+/* Ensure the search bar is at the top right */
+.dataTables_filter {
+    order: -1; 
+    align-self: flex-end;
+    margin-bottom: 10px;
+}
+
+.dataTables_filter input {
+    margin-left: 10px;
+    padding: 5px;
+    border: 1px solid #7F7F7F;
+    border-radius: 4px;
+    background-color: #0C0E10;
+    color: #e0e0e0;
+}
+
+.advanced-filter-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.slider-container {
+  margin: 20px 0;
+}
+
+#year-range-slider {
+margin: 10px;
+max-width: 740px;
+margin-left: 12px;
+}
+
+.slider-values {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0px;
+}
+
+.slider-values span {
+  font-weight: bold;
+  color: #e0e0e0;
+}
+
+.filter-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  z-index: 1001;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.filter-overlay-content {
+  backdrop-filter: blur(16px); /* Apply blur effect to the overlay content */
+  -webkit-backdrop-filter: blur(16px); /* Support for older versions of Safari */
+  padding: 20px;
+  border-radius: 8px;
+  width: 44%;
+  max-height: 80%;
+  overflow-y: auto;
+  color: #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin-top: 120px;
+}
+.filter-overlay h2 {
+  margin-top: 0;
+}
+
+.filter-overlay .filter-container {
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.filter-overlay .slider-container {
+  width: 100%;
+  margin: 20px 0;
+}
+
+.filter-overlay .slider-values {
+  justify-content: space-between;
+  width: 100%;
+}
+
+.apply-filters-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.apply-filters-button:hover {
+  background-color: #0056b3;
+}
+
+/* Styles for the close button */
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: #e0e0e0;
+  font-size: 32px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 1002;
+  transition: color 0.3s;
+}
+
+.close-button:hover {
+  color: #ff0000; /* Change color on hover to make it more noticeable */
+}
+
+.search-filter-container {
+  position: relative; /* Ensure this container is the relative reference point */
+  width: 100%; /* This should cover the full width */
+  height: auto; /* Adjust height as needed */
+}
+/* Place the button to the right at 80% of the width, ensuring it scales with the window size */
+.advanced-filter-button {
+  position: absolute;
+  left: 80%; /* 80% of the container's width */
+  top: 150px; /* Static vertical position */
+  padding: 8px 16px;
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, left 0.3s ease;
+  white-space: nowrap;
+  z-index: 20;
+}
+
+.advanced-filter-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  z-index: 1000;
+}
+
+
+.checkbox-container {
+  display: flex;
+  flex-wrap: wrap; /* Allows items to wrap to the next line */
+  gap: 3px; /* Space between items */
+  margin-top: 0px; /* Space between label and checkboxes */
+}
+
+/* Style each checkbox and label pair */
+.checkbox-container div {
+  display: flex;
+  align-items: center;
+  margin-right: 5px; /* Space between checkboxes and labels */
+}
+
+
+/* Ensure labels remain aligned */
+.checkbox-container div {
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.noUi-horizontal .noUi-handle {
+  width: 16px !important;
+  height: 16px !important;
+  right: -7px !important;
+  top: -4px !important;
+}
+
+.noUi-horizontal {
+  height: 10px!important;
+}
+
+.noUi-handle::after, .noUi-handle::before {
+  content: ""!important;
+  display: block!important;
+  position: absolute!important;
+  height: 5px!important;
+  width: 1px!important;
+  background: #E8E7E6!important;
+  left: 14px!important;
+  top: 6px!important;
+}
+/* Common button styles */
+.toggle-button, .apply-filters-button {
+  padding: 8px 16px;
+  background-color: transparent !important;
+  color: white !important;
+  border: 1px solid white !important;
+  border-radius: 4px !important;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  white-space: nowrap;
+  text-align: center;
+  text-decoration: none; /* Ensure no text decoration */
+  display: inline-block; /* Ensure it behaves like a button */
+}
+.toggle-button{
+  padding: 3px !important;
+}
+/* Hover effects for the buttons */
+.toggle-button:hover, .apply-filters-button:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+  border-color: white !important; /* Ensure border stays white */
+}
+
+/* Ensuring no default blue color */
+.toggle-button:focus, .apply-filters-button:focus, 
+.toggle-button:active, .apply-filters-button:active {
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+  color: white !important;
+  border-color: white !important;
+}
+
+.noUi-handle {
+  border-radius: 43px!important;
+}
+.noUi-handle::after, .noUi-handle::before {
+  content: "" !important;
+  height: 0px !important;
+}
+.noUi-target {
+  border: 1px solid #000!important;
+  background: #5e5e5e!important;
+  box-shadow: inset 0 0px 0px #F0F0F0!important;
+}
+
+.noUi-connect {
+  background: #ffffff !important;
+}
+
+
+.attacker-type-container {
+  display: flex;
+  justify-content: flex-start; /* Align items to the start */
+  align-items: center;
+  width: 100%;
+  padding: 5px 0; /* Adjust as needed for spacing */
+}
+
+.attacker-type-container .checkbox-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex-grow: 1; /* Ensure checkboxes take up available space */
+  margin-right: 20px; /* Adjust this value to move the button left */
+}
+
+.attacker-type-container .toggle-button {
+  padding: 5px 10px;
+  flex-shrink: 0; /* Prevent the button from shrinking */
+  white-space: nowrap; /* Prevent the button text from wrapping */
+  margin-left: 0; /* Optionally adjust this to fine-tune the position */
+}
+/* Base styles for all checkboxes - now invisible */
+input[type="checkbox"] {
+  appearance: none;
+  width: 0;
+  height: 0;
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  cursor: pointer;
+  outline: none;
+}
+
+/* Styles for labels that will show underline when checkbox is checked */
+.checkbox-container label {
+  position: relative;
+  font-size: 14px;
+  color: #e0e0e0;
+  cursor: pointer;
+  margin-right: 4px;
+  padding-bottom: 0px;
+  display: inline-block;
+  
+}
+
+
+/* This applies the underline to all checkboxes except the one with id "unknown-year" */
+input[type="checkbox"]:checked:not(#unknown-year) + label::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background-color: #ffffff; /* Underline color */
+}
+
+/* Align both deselect buttons to the right */
+.attacker-type-container, .targeted-infrastructure-container {
+  display: flex;
+  justify-content: space-between; /* Space between checkboxes and button */
+  align-items: center;
+}
+
+.attacker-type-container .toggle-button,
+.targeted-infrastructure-container .toggle-button {
+  margin-left: auto; /* Align buttons to the right */
+}
+.unknown-year-container {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+/* Style the label to align properly with the checkbox */
+.unknown-year-container label {
+  margin-left: 8px;
+  color: #e0e0e0;
+  font-size: 14px;
+  text-decoration: none !important; /* Ensure no underline */
+  cursor: pointer; /* Ensure the label is clickable */
+}
+ /* Additional styles for centering the filter titles */
+        /* Styles for the toggle buttons */
+        .toggle-button {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .toggle-button:hover {
+            background-color: #0056b3;
+        }
+
+        .attacker-type-container,
+        .targeted-infrastructure-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .attacker-type-container .toggle-button,
+        .targeted-infrastructure-container .toggle-button {
+            margin-left: auto;
+        }
+
+        /* Checkbox underline logic */
+        input[type="checkbox"] {
+            appearance: none;
+            width: 0;
+            height: 0;
+            background-color: transparent;
+            border: none;
+            position: absolute;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .checkbox-container label {
+            position: relative;
+            font-size: 14px;
+            color: #e0e0e0;
+            cursor: pointer;
+            margin-right: 4px;
+            padding-bottom: 1px;
+            display: inline-block;
+        }
+
+        input[type="checkbox"]:checked + label::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 2px;
+            background-color: #ffffff;
+        }
+
+        .checkbox-container div {
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+      /* Styles for the toggle buttons */
+      .toggle-button {
+          margin: 10px 0;
+          padding: 10px;
+          background-color: #007bff;
+          color: white;
+          border: none;
+          cursor: pointer;
+          border-radius: 5px;
+          text-align: center;
+      }
+
+      .toggle-button:hover {
+          background-color: #0056b3;
+      }
+
+      .attacker-type-container,
+      .targeted-infrastructure-container {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+      }
+
+      .attacker-type-container .toggle-button,
+      .targeted-infrastructure-container .toggle-button {
+          margin-left: auto;
+      }
+
+      /* Checkbox underline logic */
+      input[type="checkbox"] {
+          appearance: none;
+          width: 0;
+          height: 0;
+          background-color: transparent;
+          border: none;
+          position: absolute;
+          cursor: pointer;
+          outline: none;
+      }
+
+      .checkbox-container label {
+          position: relative;
+          font-size: 14px;
+          color: #e0e0e0;
+          cursor: pointer;
+          margin-right: 4px;
+          padding-bottom: 1px;
+          display: inline-block;
+      }
+
+      input[type="checkbox"]:checked + label::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          height: 2px;
+          background-color: #0070b6;
+      }
