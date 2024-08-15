@@ -6,7 +6,7 @@ function showBrief(details) {
 
         let reference2HTML = '';
         if (detailObj.Reference2) {
-            reference2HTML = `, <a href="${detailObj.Reference2}" target="_blank"> [2]</a></p>`;
+            reference2HTML = `, <a href="${detailObj.Reference2}" target="_blank"> [2]</a>`;
         }
 
         overlayContent.innerHTML = `
@@ -19,19 +19,25 @@ function showBrief(details) {
                     <div class="brief-aurora__item"></div>
                 </div>
             </h2>
-            <tr>
             <br>
-            <p><strong>Year:</strong> ${detailObj.Year}</p>
-            <p><strong>Country:</strong> ${detailObj.Country}</p>
-            <p><strong>Scale:</strong> ${detailObj.Scale}</p>
-            <p><strong>Targeted Infrastructure:</strong> ${detailObj["Targetted Infrastructure"]}</p>
-            <p><strong>Initial Access:</strong> ${detailObj["Initial Access"]}</p>
-            <p><strong>Attacker Type:</strong> ${detailObj["Attacker Type"]}</p>
-            <p><strong>Attacker Name:</strong> ${detailObj["Attacker Name"]}</p>
-            <p><strong>Impact:</strong> ${detailObj.Impact}</p>
-            <p><strong>Description:</strong> ${detailObj.Story}</p>
-            <p><strong>References:</strong> <a href="${detailObj.Reference1}" target="_blank">[1]</a> 
-            ${reference2HTML}
+            <div class="brief-overview">
+                <span><strong>Year:</strong> ${detailObj.Year}</span> | 
+                <span><strong>Country:</strong> ${detailObj.Country}</span> | 
+                <span><strong>Scale:</strong> ${detailObj.Scale}</span>
+            </div>
+            <div class="brief-separator"></div> <!-- Separator line -->
+            <table class="brief-table">
+                <tbody>
+                    <tr><td><strong>Targeted Infrastructure</strong></td><td>${detailObj["Targetted Infrastructure"]}</td></tr>
+                    <tr><td><strong>Initial Access</strong></td><td>${detailObj["Initial Access"]}</td></tr>
+                    <tr><td><strong>Attacker Type</strong></td><td>${detailObj["Attacker Type"]}</td></tr>
+                    <tr><td><strong>Attacker Name</strong></td><td>${detailObj["Attacker Name"]}</td></tr>
+                    <tr><td><strong>Malware Used</strong></td><td>${detailObj["Malware"]}</td></tr>
+                    <tr><td><strong>Impact</strong></td><td>${detailObj.Impact}</td></tr>
+                    <tr><td><strong>Description</strong></td><td>${detailObj.Story}</td></tr>
+                    <tr><td><strong>References</strong></td><td><a href="${detailObj.Reference1}" target="_blank">[1]</a>${reference2HTML}</td></tr>
+                </tbody>
+            </table>
         `;
 
         overlay.style.display = 'flex';
@@ -86,7 +92,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const dataTable = $('#example').DataTable();
 
         $('#attacker-type-filter input[type="checkbox"]:checked').each(function () {
-            // Use \b to denote word boundaries, ensuring exact matches
             selectedTypes.push('\\b' + $(this).val() + '\\b');
         });
 
@@ -140,12 +145,30 @@ document.addEventListener("DOMContentLoaded", function () {
             `);
         });
 
+        // Custom sorting logic for the Year column
+        $.fn.dataTable.ext.type.order['custom-year-sort-pre'] = function (data) {
+            const yearData = data.trim().toLowerCase();
+            if (yearData === 'unknown') {
+                return -Infinity; // Treat unknown as the smallest value so it sorts to the bottom in descending order
+            }
+            const yearParts = yearData.split('-');
+            const year = parseInt(yearParts[0]);
+            return isNaN(year) ? -Infinity : year;
+        };
+
         const dataTable = $('#example').DataTable({
             dom: '<"top"lf<"info-container">>rt<"bottom"ipB><"clear">',
             paging: true,
             autoWidth: false,
             responsive: true,
             pageLength: 100,
+            order: [[2, 'desc']], // Initial sorting by Year, descending from latest to oldest
+            columnDefs: [
+                { targets: 2, type: 'custom-year-sort' },
+                { orderable: false, targets: 5 },
+                { className: "dt-center", targets: "_all" },
+                { width: "5%", targets: 7, orderable: false }
+            ],
             buttons: [
                 {
                     text: 'Download as PDF',
@@ -241,12 +264,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
 
                 updateDataTable();
-            },
-            columnDefs: [
-                { orderable: false, targets: 5 },
-                { className: "dt-center", targets: "_all" },
-                { width: "5%", targets: 7, orderable: false }
-            ],
+            }
         });
 
         $('#attacker-type-filter input[type="checkbox"], #targeted-infrastructure-filter input[type="checkbox"]').on('change', function () {
