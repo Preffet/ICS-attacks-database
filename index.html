@@ -1,27 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script>
-    if (window.location.pathname.endsWith("index.html")) {
-        window.location.replace(window.location.pathname.replace("index.html", ""));
-    }
-  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/style.css">
-  <title>ICS Attacks</title>
+  <title>ICS Attacks</title>x
 </head>
 <body>
-  <!-- Preloader -->
-  <div id="preloader">
-    <div class="loader"></div>
-  </div>
-
   <div class="navbar">
     <div class="brand">ICS Attacks</div>
     <div class="nav-links">
       <a href="#about">About</a>
-      <a href="/database/">Attacks Database</a>
+      <a href="../database/" onclick="location.href='../database/'; return false;">Attacks Database</a>
     </div>
   </div>
 
@@ -43,7 +33,7 @@
         <p class="gray-text">This project records and documents ICS attacks in a centralised database, providing a valuable resource for future analysis and research into these security breaches and prevention of the future attacks.</p>
         <p class="gray-text">For further information, inquiries, or to report new attacks, please get in touch via email or open a pull request to update the database directly on GitHub. We are open to collaboration and are eager to share our findings with others working in the field of ICS security.</p>
         <div class="cta">
-          <button class="neon-button" onclick="location.href='/database/'">
+          <button class="neon-button" onclick="location.href='../database/'">
             <span></span>
             <span></span>
             <span></span>

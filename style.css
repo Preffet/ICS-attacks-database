@@ -19,7 +19,11 @@ body {
   font-weight: 400;
   line-height: 1.778;
   overflow-x: hidden;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
 }
+
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
@@ -79,6 +83,8 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - 60px); /* Ensure it stretches to full height minus navbar height */
+  position: relative;
+  z-index: 1; 
 }
 
 /* Section container */
@@ -433,12 +439,6 @@ p.gray-text {
   100% {
     border-radius: 37% 29% 27% 27% / 28% 25% 41% 37%;
   }
-}
-
-body {
-  margin: 0;
-  display: flex;
-  flex-direction: column;
 }
 
 .header-bg {
@@ -901,11 +901,6 @@ table.dataTable tbody tr:nth-child(even):hover {
   position: relative;
 }
 
-/* Adjust the main-content z-index and positioning */
-.main-content {
-  position: relative;
-  z-index: 1; 
-}
 
 .slider-container label {
   color: #e0e0e0; 
@@ -1263,113 +1258,114 @@ input[type="checkbox"]:checked:not(#unknown-year) + label::after {
   cursor: pointer; /* Ensure the label is clickable */
 }
 
-        .attacker-type-container,
-        .targeted-infrastructure-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+.attacker-type-container,
+.targeted-infrastructure-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-        .attacker-type-container .toggle-button,
-        .targeted-infrastructure-container .toggle-button {
-            margin-left: auto;
-        }
+.attacker-type-container .toggle-button,
+.targeted-infrastructure-container .toggle-button {
+  margin-left: auto;
+}
 
-        /* Checkbox underline logic */
-        input[type="checkbox"] {
-            appearance: none;
-            width: 0;
-            height: 0;
-            background-color: transparent;
-            border: none;
-            position: absolute;
-            cursor: pointer;
-            outline: none;
-        }
+/* Checkbox underline logic */
+input[type="checkbox"] {
+  appearance: none;
+  width: 0;
+  height: 0;
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  cursor: pointer;
+  outline: none;
+}
 
-        .checkbox-container label {
-            position: relative;
-            font-size: 14px;
-            color: #e0e0e0;
-            cursor: pointer;
-            margin-right: 4px;
-            padding-bottom: 1px;
-            display: inline-block;
-        }
-
-
-        .checkbox-container div {
-            display: inline-block;
-            margin-bottom: 10px;
-        }
-      /* Styles for the toggle buttons */
-      .toggle-button {
-          margin: 10px 0;
-          padding: 10px;
-          background-color: #e0e0e0;
-          color: white;
-          border: none;
-          cursor: pointer;
-          border-radius: 5px;
-          text-align: center;
-      }
-
-      .toggle-button:hover {
-          background-color: #e0e0e0;
-      }
-
-      .attacker-type-container,
-      .targeted-infrastructure-container {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-      }
-
-      .attacker-type-container .toggle-button,
-      .targeted-infrastructure-container .toggle-button {
-          margin-left: auto;
-      }
-
-      /* Checkbox underline logic */
-      input[type="checkbox"] {
-          appearance: none;
-          width: 0;
-          height: 0;
-          background-color: transparent;
-          border: none;
-          position: absolute;
-          cursor: pointer;
-          outline: none;
-      }
-
-      .checkbox-container label {
-          position: relative;
-          font-size: 14px;
-          color: #e0e0e0;
-          cursor: pointer;
-          margin-right: 4px;
-          padding-bottom: 1px;
-          display: inline-block;
-      }
+.checkbox-container label {
+  position: relative;
+  font-size: 14px;
+  color: #e0e0e0;
+  cursor: pointer;
+  margin-right: 4px;
+  padding-bottom: 1px;
+  display: inline-block;
+}
 
 
-      input[type="checkbox"]:checked + label::after {
-          content: '';
-          position: absolute;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          height: 1px;
-          background-color:  #e0e0e0;
-      }
+.checkbox-container div {
+  display: inline-block;
+  margin-bottom: 10px;
+}
+/* Styles for the toggle buttons */
+.toggle-button {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #e0e0e0;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.toggle-button:hover {
+  background-color: #e0e0e0;
+}
+
+.attacker-type-container,
+.targeted-infrastructure-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.attacker-type-container .toggle-button,
+.targeted-infrastructure-container .toggle-button {
+  margin-left: auto;
+}
+
+/* Checkbox underline logic */
+input[type="checkbox"] {
+  appearance: none;
+  width: 0;
+  height: 0;
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  cursor: pointer;
+  outline: none;
+}
+
+.checkbox-container label {
+  position: relative;
+  font-size: 14px;
+  color: #e0e0e0;
+  cursor: pointer;
+  margin-right: 4px;
+  padding-bottom: 1px;
+  display: inline-block;
+}
+
+
+input[type="checkbox"]:checked + label::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background-color:  #e0e0e0;
+}
 
       /* Brief Table Styling */
 .brief-table {
   width: 100%;
   border-spacing: 0;
   table-layout: fixed;
-  margin-top: 20px;
+  margin-top: 0; 
 }
+
 
 .brief-table tbody tr:nth-child(odd) {
   background-color: rgba(255, 255, 255, 0.02);
@@ -1447,8 +1443,4 @@ input[type="checkbox"]:checked:not(#unknown-year) + label::after {
 
 .brief-overview span {
   margin: 0 10px;
-}
-
-.brief-table {
-  margin-top: 0; 
 }
